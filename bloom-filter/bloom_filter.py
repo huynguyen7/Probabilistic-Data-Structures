@@ -19,8 +19,8 @@ class BloomFilter:
     def get_hashed_indices(self, element):
         element = str(element).encode('utf-8')
         hashed_elements = [int.from_bytes(h(element).digest(), byteorder='big') for h in self.hash_fns]
-        hashed_index = [hashed_element % self.num_elements for hashed_element in hashed_elements]
-        return hashed_index
+        hashed_indices = [hashed_element % self.num_elements for hashed_element in hashed_elements]
+        return hashed_indices
 
     def insert(self, element):
         hashed_indices = self.get_hashed_indices(element)
