@@ -1,14 +1,16 @@
 import hashlib
 
+
 """
 
-    *NAME: HUY NGUYEN
+    @author: Huy Nguyen
     - Just for academic purpose only!
     - Deleting elements from Bloom Filter is not possible since it may cause to module hash corruption to other elements.
     - Possibly false positive. (The more elements we added, the more likely we may have false positives)
     - Impossibly false negative.
 
 """
+
 
 class BloomFilter:
     def __init__(self, num_bits):
