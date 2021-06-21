@@ -29,14 +29,14 @@ import numpy as np
 
 class CountMinSketch(object):
     def __init__(self, epsilon=None, gamma=None, depth=None, width=None):
-        if epsilon is not None and gamma is not None:  # Using epsilon to decide width
+        if epsilon is not None and gamma is not None:
             assert epsilon > 0 and epsilon <= 1 and gamma > 0 and gamma <= 1
             self.depth = int(np.log(gamma**(-1))+1)
             self.width = int(np.e*(epsilon**(-1))+1)
         elif depth is not None and width is not None:
-            assert width > 0 and depth > 0 and depth <= 12
             self.depth = depth  # Number of hash functions, we don't support shake..
             self.width = width  # Number of buckets.
+        assert self.width > 0 and self.depth > 0 and self.depth <= 12
         self.counters = np.zeros(shape=(self.depth,self.width), dtype=np.int64)  # The space required is fixed.
         self.hash_functions = np.random.choice(available_hash_functions(), size=self.depth)  # Uniformly choosing hash functions.
 
@@ -45,13 +45,13 @@ class CountMinSketch(object):
     def increment(self, val):  # Update the number of time we have seen the value.
         for i in range(self.depth):
             x = str(val).encode('utf-8')
-            h_x = int.from_bytes(self.hash_functions[i](x).digest(), byteorder='little') % self.depth
+            h_x = int.from_bytes(self.hash_functions[i](x).digest(), byteorder='little') % self.width
             self.counters[i,h_x] += 1
 
-    def estimate(self, val):  # Return the number of time we have update the value.
+    def estimate(self, val):  # Return the number of time we have updated the value.
         x = str(val).encode('utf-8')
         result = np.inf
         for i in range(self.depth):
-            h_x = int.from_bytes(self.hash_functions[i](x).digest(), byteorder='little') % self.depth
+            h_x = int.from_bytes(self.hash_functions[i](x).digest(), byteorder='little') % self.width
             result = min(result, self.counters[i,h_x])
         return result
