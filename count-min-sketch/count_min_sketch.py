@@ -18,8 +18,8 @@ import numpy as np
     Pick w = e * ε^-1.
     Pr[âi−ai > ε*L1_norm(a)] ≤ δ.
 
-    Gamma: Confidence
-    Epsilon: Accuracy
+    Gamma: Confidence, the lower, the better.
+    Epsilon: Accuracy, the lower, the better.
 
 """
 
